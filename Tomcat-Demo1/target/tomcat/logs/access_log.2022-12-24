@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [24/Dec/2022:19:13:23 +0800] "GET /Tomcat-Demo1 HTTP/1.1" 302 - http-bio-10010-exec-1 0
+0:0:0:0:0:0:0:1 - - [24/Dec/2022:19:13:23 +0800] "GET /Tomcat-Demo1/ HTTP/1.1" 200 52 http-bio-10010-exec-3 457
+0:0:0:0:0:0:0:1 - - [24/Dec/2022:19:13:23 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-10010-exec-4 0
+0:0:0:0:0:0:0:1 - - [24/Dec/2022:19:13:40 +0800] "GET /Tomcat-Demo1/CookieServlet HTTP/1.1" 200 - http-bio-10010-exec-5 1

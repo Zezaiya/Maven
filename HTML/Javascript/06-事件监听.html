@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="register" action="#">
+    用户名<input type="text" name="username" id="username"> <br>
+    <span id="username_err" style="display:none"><font color="red">您输入的账号格式有误</font></span><br>
+    密码<input type="password" name="password" id="password"> <br>
+    <span id="password_err" style="display:none"><font color="red">您输入的密码格式有误</font></span><br>
+    <input type="submit" value="注册" id="submit">
+</form>
+
+
+<script>
+     var a= document.getElementById("username");
+     a.onblur=function checkUsername(){
+      var input1=a.value.trim();
+      if(input1.length > 6 && input1.length < 12){
+     document.getElementById("username_err").style.display='none';
+            return true;
+      }
+      else{
+         document.getElementById("username_err").style.display='';
+            return false;
+      }
+    }
+
+    var b= document.getElementById("password");
+     b.onblur=function checkPassword(){
+      var input2=b.value.trim();
+      if(input2.length > 6 && input2.length < 12){
+     document.getElementById("password_err").style.display='none';
+         return true;
+      }
+      else{
+         document.getElementById("password_err").style.display='';
+         return false;
+      }
+    }
+
+    var reg=document.getElementById("register");
+    reg.onSubmit=function(){
+      let flag=checkUsername()&&checkPassword();
+      return flag;
+    }
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
+
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-table
+                :data="tableData"
+                style="width: 100%"
+                :row-class-name="tableRowClassName">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    type="index"
+                    :index="indexMethod">
+            </el-table-column>
+            <el-table-column
+                    prop="BrandName"
+                    align="center"
+                    label="品牌名称"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="CompanyName"
+                    align="center"
+                    label="企业名称"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="Ordered"
+                    align="center"
+                    label="排序">
+            </el-table-column>
+            <el-table-column
+                    prop="Status"
+                    align="center"
+                    label="当前状态">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    label="操作">
+                <el-button type="primary" disabled>修改</el-button>
+                <el-button type="danger" disabled>删除</el-button>
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+
+<script>
+    new Vue({
+      el:"#app",
+      methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+       }
+      },
+      data() {
+      return {
+        tableData: [{
+          BrandName: '华为',
+          CompanyName: '华为科技有限公司',
+          Ordered: '100',
+          Status:"1"
+        }, {
+          BrandName: '华为',
+          CompanyName: '华为科技有限公司',
+          Ordered: '100',
+          Status:"1"
+        }, {
+          BrandName: '华为',
+          CompanyName: '华为科技有限公司',
+          Ordered: '100',
+          Status:"1"
+        }, {
+          BrandName: '华为',
+          CompanyName: '华为科技有限公司',
+          Ordered: '100',
+          Status:"1"
+        }]
+      }
+    }
+    })
+</script>
+
+</body>
+</html>

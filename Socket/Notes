@@ -1,0 +1,24 @@
+我对于Socket的理解
+1.Socket是一个类,为我们提供了端与端通讯的方法
+->既然是通讯,就至少是两台设备的信息传递,所以Socket为我们提供了客户端Socket类和服务器serverSocket类
+
+2.进行通讯的时候肯定不是客户端输入一个字节就发送一个字节,效率很低,此时就要用到输入输出流:将欲输入的内容封装成FileInputStream流
+  再进一步封装成BufferInputStream缓冲流,可以大幅提高传输效率
+
+3.Socket通信基本流程
+->客户端:
+        1)创建Socket对象,参数内写明IP地址与服务器端口号,完成后会向服务器端发送连接请求
+        2)准备欲发送的信息str
+        3)将Socket.getOutputStream封装成PrintWriter类(该类综合了创建FileOutputStream和BufferedOutputStream)
+        4)使用PrintWriter类的write(str)方法将欲发送的信息写入输出流
+->服务器
+        1)创建ServerSocket对象,参数内写明该服务器端口号
+        2)创建Socket对象来接收ServerSocket->accept方法的返回值
+        3)将Socket.getInputStream封装成BufferedReader类
+        4)使用BufferedReader类的readLine()方法打印接收进来的流
+
+
+
+        附:     1)Socket socket=new Socket(IP地址,端口号)    //注意:端口号很重要,表示欲与该端口号的服务器进行连接,若无此端口,连接失败
+                2)Socket.getInputStream()  //表示在建立连接后,取走相连端发来的信息
+                3)Socket.getOutputStream()  //表示在建立连接后,提交本端发送的信息

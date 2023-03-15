@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--statement-->
+<mapper namespace="com.itheima.Mapper.BrandMapper">
+    <resultMap id="brandResultMap" type="com.itheima.pojo.Brand">
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+    </resultMap>
+    <!--添加-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_brand(brand_name,company_name,ordered,description,status)
+        values(#{brandName},#{companyName},#{ordered},#{description},#{status})
+    </insert>
+
+    <!-- 修改全部字段-->
+    <update id="update">
+        update tb_brand
+        set brand_name=#{brandName},
+        company_name=#{companyName},
+        ordered=#{ordered},
+        description=#{description},
+        status=#{status}
+        where id=#{id};
+    </update>
+
+    <!--修改动态字段-->
+    <update id="movingUpdate">
+        update tb_brand
+        <set>
+            <if test="brandName!=null and brandName!=''">
+                brand_name=#{brandName},
+            </if>
+
+            <if test="companyName!=null and companyName!=''">
+                company_name=#{companyName},
+            </if>
+
+            <if test="ordered!=null">
+                ordered=#{ordered},
+            </if>
+
+            <if test="description!=null and description!=''">
+                description=#{description},
+            </if>
+
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </set>
+        where id=#{id};
+    </update>
+
+    <!--删除一条字段-->
+    <delete id="deleteOne">
+        delete from tb_brand where id = #{id};
+    </delete>
+
+   <!-- 批量删除-->
+    <delete id="movingDelete">
+        delete from tb_brand where id
+        in(
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--查找所有-->
+    <select id="selectAll" resultMap="brandResultMap">
+        select * from tb_brand;
+    </select>
+
+    <!--通过id查找某一记录-->
+    <select id="selectOne" resultMap="brandResultMap">
+        select* from tb_brand where id=#{id};
+    </select>
+
+    <!--多条件动态查询-->
+    <select id="variousSelect" resultMap="brandResultMap">
+        select* from tb_brand
+        <where>
+            <if test="status!=null">
+                and status=#{status}
+            </if>
+
+            <if test="companyName!=null and companyName!=''">
+                and company_name like #{companyName}
+            </if>
+
+            <if test="brandName!=null and brandName!=''">
+                and brand_name like #{brandName};
+            </if>
+
+        </where>
+    </select>
+
+
+    <!--单条件动态查询,选定一个条件进行查询-->
+    <select id="singleSelect" resultMap="brandResultMap">
+        select * from tb_brand
+        <where>
+            <choose><!--类似于switch-->
+                <when test="status!=null"><!--类似于case-->
+                    status=#{status}
+                </when>
+
+                <when test="companyName!=null and companyName!=''">
+                    company_name like #{companyName}
+                </when>
+
+                <when test="brandName!=null and brandName!=''">
+                    brand_name like #{brandName}
+                </when>
+
+                <!-- <otherwise>;类似于default;
+                      1=1                      //如果用户没有选择任何条件需要一个默认的条件,用where标签就可以解决
+                 </otherwise>-->
+            </choose>
+        </where>
+
+    </select>
+
+</mapper>

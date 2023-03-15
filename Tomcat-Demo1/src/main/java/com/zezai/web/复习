@@ -1,0 +1,10 @@
+                                      产品信息网页实现
+环境准备:  1.构建以web为骨架的Maven项目
+          2.登录,注册.html页面
+          3.导入servlet,mybatis依赖
+          4.准备一个javabean类储存产品信息,同时创建一个与之对应的数据库
+          5.配置好mybatis核心配置文件
+
+开始搭建:  1. 编写mapper/dao层,通过注解的形式写好增删查改的操作
+          2.编写service层,里面需要写好调用mapper的方法
+          3.编写controller层,创建service对象并继承httpservlet重写doget和dopost方法

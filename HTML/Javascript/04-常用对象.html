@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function open(){
+         window.alert("Surprise!");
+    };
+    function close(){
+         window.alert("关闭");
+    };
+    var x=0;
+
+     setInterval(function(){
+     if(x%2==0){      //实现两个操作在规定时间循环执行
+     open();
+     }
+     else{
+     close();
+     }
+     x++;
+    },1000);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单标签</title>
+</head>
+<body>
+<form action="#" method="post">    <!-- #号表示提交到当前页面里-->
+    <label for="username">用户名:</label>    <!--使用label将用户名三个字和表单项包裹起来可以实现点击用户名就可以出现光标-->
+    <input type="text" name="username" id="username">   <!--为按钮命名id-->
+    <br>
+    <label for="password">密码:</label>
+    <input type="password" name="password" id="password">
+    <br>
+
+    性别
+    <input type="radio" name="sex" value="男" id="male">     <!--添加value属性可以修改上传的数据值-->
+    <label for="male">男</label>
+    <input type="radio" name="sex" value="女" id="female">     <!--将name属性值设置成一样即可实现互斥选择-->
+    <label for="female">女</label>
+    <br>
+    爱好
+    <input type="checkbox" value="唱" name="sing" id="sing">
+    <label for="sing">唱</label>
+    <input type="checkbox" value="跳" name="jump" id="jump">
+    <label for="jump">跳</label>
+    <input type="checkbox" value="rap" name="rap" id="rap">
+    <label for="rap">rap</label>
+    <input type="checkbox" value="篮球" name="basketball" id="basketball">
+    <label for="basketball">篮球</label>
+    <br>
+    头像
+    <input type="file" name="file">
+    <br>
+    城市
+    <select name="city">
+        <option>无</option>
+        <option>株洲</option>
+        <option>长沙</option>      <!--表项-->
+        <option>湘潭</option>
+        <option>岳阳</option>
+    </select>
+    <br>
+    个人描述
+    <textarea cols="5" rows="1" name="description"></textarea>          <!--创建文本框-->
+    <br>
+    <input type="submit" value="登录">     <!--修改默认按钮名-->
+    <input type="reset"  value="清空所有">
+    <br>
+</form>
+</body>
+</html>

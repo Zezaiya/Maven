@@ -1,0 +1,177 @@
+Mybatis:
+是一款优秀的(持久层)框架,用于简化JDBC的开发(持久层:负责用于操作数据库的那一层代码)  官网:https://mybatis.org/mybatis-3/zh/index.html
+
+JavaEE三次架构:表现层,业务层,持久层
+
+框架:
+框架就是一个半成品软件,是一套可重用,通用的,软件基础代码模型
+在框架的基础上构建软件编写更加高效,规范,通用,可扩展
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+JDBC缺点:
+1.硬编码:需要定义大量字符串(注册驱动,连接,SQL),而字符串有可能出现变动
+2.操作繁琐
+
+针对这些缺点,Mybatis提供了相应的解决方案:
+   硬编码---------将字符串以及连接信息保存到配置文件xml里
+   操作繁琐-------Mybatis简洁语句
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Mybatis操作步骤
+1.创建Maven项目,并在项目pom文件里添加mybatis,mysql等依赖,可直接用写好的这个
+2.在src->main目录内创建资源resource根目录,根目录内存放三种配置文件:(1)Mapper代理文件(官网有),主要用于存放自己定义的用来操作某一数据库的SQL语句
+                                                                 (2)logback配置文件(大同小异),应该是和库里的依赖有关,一般都有
+                                                 (3)mybatis核心配置文件(官网有),用于加载获取工厂对象,文件里定义了数据库连接信息以及对应的sql映射文件
+
+3.在src->main->java目录内创建Test类,如果需要用到其他类可以在该目录内创建一个pojo目录来存放类,然后Test类里操作步骤如下 //参考Mybatis-Demo->src->main->java->Test
+(1)加载Mybatis核心配置文件,获取SqlSessionFactory
+(2)获取SqlSession对象,以执行SQL语句(类似Statement)
+(3)执行SQL并用对应的类型接收
+(4)释放资源sqlSession.close()
+
+不足:
+执行SQL时:List<User1> users=sqlSession.selectList("jdbctest.selectAll")->参数仍然是硬编码,且SQL语句的唯一标识繁多(这里是jdbctest)不易记忆,不灵活切较为繁琐
+
+解决方案:Mapper代理开发
+->只需要获取Mapper对象,然后直接用Mapper.方法名即可
+例:  jdbcMapper mapper=sqlSession.getMapper(jdbcMapper.class);//参数为Mapper配置文件名.class
+     List<User1> users=mapper.selectAll();
+
+*使用Mapper代理开发前提
+1.定义的SQL映射文件同名的Mapper接口(jdbcMapper),并且将Mapper接口和SQL映射文件放置在同一目录下
+2.设置SQL映射文件的namespace属性为Mapper接口全限定名(含包的名称)
+3.在Mapper接口中定义方法,方法名就是SQL映射文件中sql语句的id,并保持参数类型和返回值类型一致
+细节1:如果满足Mapper代理开发前提,则Mybatis核心配置文件里加载SQL映射文件可以直接输入包名,如<package name="com.itheima.Mapper"/>,这样操作数据库的所有Mapper文件都可以被加载
+细节2:在映射文件里返回值类型"com.itheima.pojo.User1"过于繁琐的话可以在Mybatis核心配置文件里添加<typeAliases>包扫描,例:<typeAliases>
+                                                                                                         <package name="com.itheima.pojo"/>
+                                                                                                         </typeAliases>
+                                                                                                         ->这样就可以直接在映射文件里写类名User1了
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+MybatisX-> 红色小鸟:Mapper映射文件自己定义的SQL(statement)   蓝色小鸟:对应的接口方法
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+实战操作数据步骤:
+1.编写接口方法,通过MybatisX自动生成映射文件的SQL(statement)
+2.确定参数(接口方法是否需要传参)
+3.返回值类型List<类型>写在接口里,写在映射文件的resultType里的类型要写全名
+4.执行
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+如果数据库内字段名和类属性名不一样,则无法输出对应结果brandName/brand_name
+解决方案:1.起别名:select *改成  select 数据库字段名 as 类属性名(不方便)
+        2.resultMap(写在namespace下面)---映射
+          例:        <resultMap id="brandResultMap" type="brand">  (id-唯一标识/Type-映射的类型,写全名)
+                     <result column="数据库字段名(表的列名)" property="类属性名"/>   (result--一般字段映射   id--主键字段映射)
+                     </resultMap>
+
+                     //在statement标签中直接使用resultMap类型,会自动搜索并转换名字
+                     <select id="selectAll" resultMap="brandResultMap">
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+当需要传参数时,mapper映射文件的SQL语句里需要使用参数占位符
+例:   select* from tb_brand where id=#{id};   其中#{}为占位符,会将其替换为?,{}里面的参数是?的值,防止SQL注入   而${}是直接拼接SQL,发生SQL注入
+细节:当需要比较传入的参数是,直接使用>,<容易报错,此时可以创建CDATA区,在区内使用符号即可(输入CD自动生成)
+    例:select* from tb_brand where id
+    <![CDATA[
+       <    //预使用的符号
+    ]]>
+    #{id};
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+当需要传入多个参数时,由于mapper映射文件statement无法识别具体传入的顺序和位置,mybatis提供了三种书写方式:
+1.(散装参数)在参数名称前加上注解public void getAll(@param("status")(int status));    //param后面的参数表示传入到mapper内statement里参数占位符名称,所以要和占位符内的名称一致
+
+2.(实体类封装参数)传入封装好的对象,mapper会自动获取对象内的get方法得到对应的值  public void getAll(Brand brand);  //注意:对象里属性名称要和mapper里参数占位符名称一致
+
+3.(map集合)传入封装好的Map类型  Map map=new HashMap();
+                             map.put("status",status);//左边表示参数占位符名称,右边表示传入的值
+
+
+原理:当检测到传入多个参数时,系统会将这些参数封装成Map类集合作为参数传入,Map集合里的值即为我们传入的值,而键的名称是默认的arg和param,
+    所以传入的并不是我们自己写的参数名,而是集合中的默认键名,如果想要传入自己写的参数名需要替换arg键名,使用@param即可
+             map.put("arg0",参数值1)
+             map.put("param1",参数值1)
+             map.put("arg1",参数值2)
+             map.put("param2",参数值2)
+
+    *所以以后建议传入多个参数时都用@param,提高代码可读性,List和数组类型的也建议使用@param
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+例:  <select id="variousSelet" resultMap="brandResultMap">
+     select* from tb_brand
+     where status=#{status}
+     and company_name like #{companyName}
+     and brand_name like #{brandName};
+     </select>
+ 问题:当用户进行多条件查询时,可能只会输入某一条件,而mapper里只定义了输入多个条件才能触发的SQL语句,此时无法满足用户需求
+
+ 解决方法->动态SQL
+ SQL语句会随着用户的输入或外部条件的变化而变化
+     具体实现方法:
+          <select id="variousSelet" resultMap="brandResultMap">
+          select* from tb_brand where
+
+          <if test="status!=null">
+          status=#{status}
+          </if>
+
+          <if test="companyName!=null" and companyName!=" ">
+          and company_name like #{companyName}
+          </if>
+
+           <if test="brandName!=null" and brandName!=" ">
+          and brand_name like #{brandName};
+          </if>
+          </select>
+ 问题:只要用户不输入第一个条件来查询SQL语句就会报错(select * from tb_brand where and ......)
+
+ 解决方法:添加where标签(使用更新操作时同理<set>)
+ 只需要将所有SQL语句前加上and,把where删去,添加where标签即可
+           select id="variousSelect" resultMap="brandResultMap">
+           select* from tb_brand
+           <where>
+
+           <if test="status!=null">
+           and status=#{status}
+           </if>
+
+           <if test="companyName!=null" and companyName!=" ">
+           and company_name like #{companyName}
+           </if>
+
+           <if test="brandName!=null" and brandName!=" ">
+           and brand_name like #{brandName};
+           </if>
+
+           </where>
+           </select>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+<choose>类似于switch
+<when test=xxx>类似于case
+<otherwise>类似于default
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+当用Mybatis对数据库进行增删改操作时Mybatis默认关闭自动提交事务,需要我们主动提交事务,不然系统会回滚事务
+                          如果想开启主动提交可以在创建sqlSession对象时在参数内写true
+               例:SqlSession sqlSession = sqlSessionFactory.openSession(true);
+
+当用Mybatis对数据库进行增删改操作时如果想返回该对象的主键的时候,可以在mapper文件里配置主键信息,并且绑定主键名
+               例: <insert id="add" useGeneratedKeys="true" keyProperty="主键名称">
+在写增改方法时返回值如果用int,则返回影响行;如果用Boolean,则返回是否执行成功
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+使用Mybatis批量删除时需要传入id数组,通过遍历数组的方法依次删除
+例: delete from tb_brand where id
+        in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+           #{id}
+        </foreach>
+           ;
+其中,collection为数组名,默认应该填写array,如果想使用自己传入的参数名,需要方法的参数内写上注解(@Param("ids") int[] id)
+     item为需要遍历的类型
+     separator为分隔符号,在这里因为遍历SQL删除语句id之间要有逗号所以写","
+     open为foreach语句开始前拼接的东西
+     close为foreach语句结束后拼接的东西
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+注解进行增删查改:在接口方法上面添加注解
+       @Select("select from tb_user where id=#{id}")
+        public User selectAll(int id)
+优势:使代码更加简洁
+缺点:当需要进行较为复杂的操作时注解会显得力不从心
+
+所以注解开发一般用于处理较为简单的功能,复杂的操作建议还是用Mapper代理开发的方式
+---------------------------------------------------------------------------------------------------------------------------------------------------------

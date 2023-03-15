@@ -1,0 +1,2 @@
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:55:10 +0800] "GET /MVC-Modol-Demo1 HTTP/1.1" 302 - http-bio-10010-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:55:10 +0800] "GET /MVC-Modol-Demo1/ HTTP/1.1" 304 - http-bio-10010-exec-3 8

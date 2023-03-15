@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Basic-code/HTML/HTML.iml" filepath="$PROJECT_DIR$/../Basic-code/HTML/HTML.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Basic-code/JDBC/JDBC.iml" filepath="$PROJECT_DIR$/../Basic-code/JDBC/JDBC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaWeb.iml" filepath="$PROJECT_DIR$/JavaWeb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaWebCore/JavaWebCore.iml" filepath="$PROJECT_DIR$/JavaWebCore/JavaWebCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MVC-Modol-Demo.iml" filepath="$PROJECT_DIR$/MVC-Modol-Demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/untitled.iml" filepath="$PROJECT_DIR$/untitled.iml" />
+    </modules>
+  </component>
+</project>

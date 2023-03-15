@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:54:03 +0800] "GET /Tomcat-Demo1 HTTP/1.1" 302 - http-bio-10010-exec-1 0
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:54:04 +0800] "GET /Tomcat-Demo1/ HTTP/1.1" 200 868 http-bio-10010-exec-3 9
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:54:04 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-10010-exec-4 0
+0:0:0:0:0:0:0:1 - - [07/Jan/2023:17:54:18 +0800] "GET /Tomcat-Demo1/?username=zhangsan&password=111&remember=on HTTP/1.1" 200 868 http-bio-10010-exec-5 1
