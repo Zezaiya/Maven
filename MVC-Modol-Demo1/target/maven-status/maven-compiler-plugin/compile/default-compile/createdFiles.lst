@@ -1,10 +1,10 @@
 com\zezai\controller\addServlet.class
-com\zezai\controller\selectByIdServlet.class
 com\zezai\pojo\Brand.class
-com\zezai\controller\updateServlet.class
-com\zezai\utils\SqlSessionFactoryUtils.class
 com\zezai\controller\Filter\FilterDemo.class
-com\zezai\service\BrandService.class
-com\zezai\controller\deleteBrandByIdServlet.class
 com\zezai\mapper\BrandMapper.class
 com\zezai\controller\selectAllServlet.class
+com\zezai\controller\selectByIdServlet.class
+com\zezai\controller\updateServlet.class
+com\zezai\utils\SqlSessionFactoryUtils.class
+com\zezai\service\BrandService.class
+com\zezai\controller\deleteBrandByIdServlet.class
