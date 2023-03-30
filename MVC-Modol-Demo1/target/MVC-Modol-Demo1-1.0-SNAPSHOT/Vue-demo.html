@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <a>请输入您想打开的网页</a>
+    <input v-model="url">
+    <a v-bind:href="url">进入</a>
+    <br>
+    <div v-if="url == 1">
+        <input type="button" value="戳我有惊喜" v-on:click="show()">
+    </div>
+
+    <!--<input v-model="url">-->
+    <!--{{username}}-->
+</div>
+<script src="js/vue.js"></script>
+<script>
+    //创建Vue核心对象
+    new Vue({
+      el:"#app",
+      data(){
+        return{
+         username:"",
+         url:""
+        }
+      },
+       methods:{
+         show(){
+          alert("你没有牌面");
+         }
+       }
+    });
+</script>
+</body>
+</html>
